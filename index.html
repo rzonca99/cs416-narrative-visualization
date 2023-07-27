@@ -7,6 +7,10 @@
     <script src='https://d3js.org/d3.v5.min.js'></script>
 </head>
 
+<style>
+    .bar { fill: steelblue; }    
+</style>
+
 <body>
     <div id="visualization"></div>
     <h1>hello world</h1>
@@ -31,9 +35,11 @@
         var y = d3.scaleLinear()
             .range([height, 0]);
 
-        const data = d3.csv("electiondemographicdata.csv", function(error, data) {
-            if (error) throw error;
-        })
+        d3.csv("electiondemographicdata.csv").then(function(data) {
+
+        data.forEach(function(d) {
+            d.amounts = +d.PercentVoted2000;
+        });
 
         x.domain(data.map(function(d) { return d.Race; }));
         y.domain([0, d3.max(data, function(d) { return d.PercentVoted2000; })]);
@@ -46,6 +52,13 @@
             .attr("width", x.bandwidth())
             .attr("y", function (d) { return y(d.PercentVoted2000); })
             .attr("height", function (d) { return height - y(d.PercentVoted2000); });
+
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
+
+        svg.append("g")
+            .call(d3.axisLeft(y));
 
     </script>
 </body>
