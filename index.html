@@ -4,24 +4,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voting Demographic Data 2000-2020</title>
     <link rel="stylesheet" href="styles.css">
+    <script src='https://d3js.org/d3.v5.min.js'></script>
 </head>
-<script src='https://d3js.org/d3.v5.min.js'></script>
-<style> rect {fill: lightblue; stroke: black; }</style>
-<body>
+
+<style> circle {fill: lightblue; stroke: black;} </style>
+
+<body onload='init()'>
+    <div id="visualization"></div>
     <h1>hello world</h1>
     <p>hello world!!!!!!!!</p>
-    <a href="electiondemographicdata.csv">CSV</a>
+    <a href="electiondemographicdata.csv"></a>
     <svg width=300 height=300></svg>
     <script>
-        var data = [4,8,15,16,23,42];
-        
-        var x = d3.scaleBand().domain([0,1,2,3,4,5]).range([0,200]);
-        var y = d3.scaleLinear().domain([0,42]).range([200,0]);
+        var margin = {top: 50, right: 50, bottom: 50, left: 50};
 
-        d3.select("svg").append("g").attr("transform","translate(50,50)").call(d3.axisLeft(y));
-        d3.select("svg").append("g").attr("transform","translate(50,250)").call(d3.axisBottom(x));
+        var width = 600 - margin.left - margin.right;
+        var height = 600 - margin.top - margin.bottom;
 
-        d3.select("svg").select("path").selectAll("rect").data(data).enter().append("rect").attr("x", 0).attr("y", 200).attr("width", x.bandwidth()).attr("height", function (d) {return d;});
+        var svg = d3.select("#visualization").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+
+        var x = d3.scaleBand()
+            .range([0, width]);
+
+        var y = d3.scaleLinear()
+            .range([height, 0]);
+
+        d3.csv("electiondemographicdata.csv", function(error, data) {
+            if (error) throw error;
+            console.log(data);
+        })
+
     </script>
 </body>
 </html>
