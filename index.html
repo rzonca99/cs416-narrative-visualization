@@ -37,28 +37,24 @@
 
         d3.csv("electiondemographicdata.csv").then(function(data) {
 
-        data.forEach(function(d) {
-            d.amounts = +d.PercentVoted2000;
-        });
+            x.domain(data.map(function(d) { return d.Race; }));
+            y.domain([0, d3.max(data, function(d) { return d.PercentVoted2000; })]);
 
-        x.domain(data.map(function(d) { return d.Race; }));
-        y.domain([0, d3.max(data, function(d) { return d.PercentVoted2000; })]);
+            svg.selectAll(".bar")
+                .data(data)
+                .enter().append("rect")
+                .attr("class", "bar")
+                .attr("x", function (d) { return x(d.Race); })
+                .attr("width", x.bandwidth())
+                .attr("y", function (d) { return y(d.PercentVoted2000); })
+                .attr("height", function (d) { return height - y(d.PercentVoted2000); });
 
-        svg.selectAll(".bar")
-            .data(data)
-            .enter().append("rect")
-            .attr("class", "bar")
-            .attr("x", function (d) { return x(d.Race); })
-            .attr("width", x.bandwidth())
-            .attr("y", function (d) { return y(d.PercentVoted2000); })
-            .attr("height", function (d) { return height - y(d.PercentVoted2000); });
+        svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x));
 
-        // svg.append("g")
-        //     .attr("transform", "translate(0," + height + ")")
-        //     .call(d3.axisBottom(x));
-
-        // svg.append("g")
-        //     .call(d3.axisLeft(y));
+        svg.append("g")
+            .call(d3.axisLeft(y));
         });
     </script>
 </body>
