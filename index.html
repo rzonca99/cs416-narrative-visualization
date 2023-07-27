@@ -12,7 +12,7 @@
 </style>
 
 <body>
-    <div id="visualization"></div>
+    <div id="usbarchart"></div>
     <h1>Percent Voted by Race, 2000 General Election</h1>
     <svg width=300 height=300></svg>
     <script>
@@ -21,7 +21,7 @@
         var width = 600 - margin.left - margin.right;
         var height = 600 - margin.top - margin.bottom;
 
-        var svg = d3.select("#visualization").append("svg")
+        var svg = d3.select("#usbarchart").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
