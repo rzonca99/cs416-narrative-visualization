@@ -7,13 +7,10 @@
     <script src='https://d3js.org/d3.v5.min.js'></script>
 </head>
 
-<style> circle {fill: lightblue; stroke: black;} </style>
-
 <body>
     <div id="visualization"></div>
     <h1>hello world</h1>
     <p>hello world!!!!!!!!</p>
-    <a href="electiondemographicdata.csv"></a>
     <svg width=300 height=300></svg>
     <script>
         var margin = {top: 50, right: 50, bottom: 50, left: 50};
@@ -36,8 +33,19 @@
 
         d3.csv("electiondemographicdata.csv", function(error, data) {
             if (error) throw error;
-            console.log(data);
         })
+
+        x.domain(data.map(function(d) { return d.Race; }));
+        y.domain([0, d3.max(data, function(d) { return d.PercentVoted2000; })]);
+
+        svg.selectAll(".bar")
+            .data(data)
+            .enter().append("rect")
+            .attr("class", "bar")
+            .attr("x", function (d) { return x(d.Race); })
+            .attr("width", x.bandwidth())
+            .attr("y", function (d) { return y(d.PercentVoted2000); })
+            .attr("height", function (d) { return height - y(d.PercentVoted2000); });
 
     </script>
 </body>
