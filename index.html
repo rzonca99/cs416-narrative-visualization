@@ -44,7 +44,7 @@
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-                svg.append("text")
+        svg.append("text")
             .attr("x", width / 2)
             .attr("y", 0.4)
             .attr("text-anchor", "middle")
@@ -122,9 +122,11 @@
         
         // Load external data and boot
         Promise.all([
-        d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"),
-        d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv", function(d) {
-            data2.set(d.code, +d.pop)
+        d3.json("https://eric.clst.org/assets/wiki/uploads/Stuff/gz_2010_us_040_00_5m.json"),
+        d3.csv("electiondemographicdata.csv", function(d) {
+            if (d.Race == "Total") {
+                data2.set(d.state, +d.PercentVoted2000)
+            }
         })
         ]).then(function(loadData){
             let topo = loadData[0]
@@ -134,11 +136,11 @@
             .selectAll("path")
             .data(topo.features)
             .join("path")
-              // draw each country
+              // draw each state
               .attr("d", d3.geoPath()
                 .projection(projection)
               )
-              // set the color of each country
+              // set the color of each state
               .attr("fill", function (d) {
                 d.total = data2.get(d.id) || 0;
                 return colorScale(d.total);
