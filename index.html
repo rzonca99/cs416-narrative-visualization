@@ -122,7 +122,7 @@
         
         // Load external data and boot
         Promise.all([
-        d3.json("https://eric.clst.org/assets/wiki/uploads/Stuff/gz_2010_us_040_00_5m.json"),
+        d3.json("states.json"),
         d3.csv("electiondemographicdata.csv", function(d) {
             if (d.Race == "Total") {
                 data2.set(d.state, +d.PercentVoted2000)
