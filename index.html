@@ -145,10 +145,26 @@
         .select(".domain")
             .remove();
 
-        d3.queue()
-            .defer(d3.json, "https://d3js.org/us-10m.v1.json")
-            .defer(d3.tsv, "unemployment.tsv", function(d) { unemployment.set(d.id, +d.rate); })
-            .await(ready);
+        const files = ["https://d3js.org/us-10m.v1.json", "unemployment.tsv"];
+        const popByName = new Map();
+
+        function row(d) {
+            rateById.set(d.id, +d.rate);
+        };
+
+        const promises = [];
+        files.forEach(function(url, index) {
+            promises.push(index ? d3.tsv(url, row) : d3.json(url))
+        });
+
+        Promise.all(promises).then(function(data) {
+            console.log(data); //check if all data was loaded
+            //any code that depends on 'data' goes here
+        });
+        // d3.queue()
+        //     .defer(d3.json, "https://d3js.org/us-10m.v1.json")
+        //     .defer(d3.tsv, "unemployment.tsv", function(d) { unemployment.set(d.id, +d.rate); })
+        //     .await(ready);
 
         function ready(error, us) {
         if (error) throw error;
