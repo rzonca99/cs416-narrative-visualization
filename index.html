@@ -91,7 +91,7 @@
     </script>
 
     <div id="choropleth"></div>
-    <svg width=800 height=600></svg>
+    <svg width=400 height=300></svg>
     <script>
 
         // The svg
@@ -102,7 +102,7 @@
         // Map and projection
         const path = d3.geoPath();
         const projection = d3.geoMercator()
-          .scale(100)
+          .scale(400)
           .center([0,20])
           .translate([width2 / 2, height2 / 2]);
         
