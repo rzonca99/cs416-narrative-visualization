@@ -91,11 +91,11 @@
     </script>
 
     <div id="choropleth"></div>
-    <svg width=400 height=300></svg>
+    <svg id="choropleth_svg" width=400 height=300></svg>
     <script>
 
         // The svg
-        const svg2 = d3.select("svg"),
+        const svg2 = d3.select("choropleth_svg"),
           width2 = +svg2.attr("width"),
           height2 = +svg2.attr("height");
         
