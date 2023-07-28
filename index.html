@@ -74,7 +74,7 @@
                 .enter().append("rect")
                 .attr("class", "bar")
                 .attr("x", function (d) { return x(d.Race); })
-                .attr("width", x.bandwidth())
+                .attr("width", x.bandwidth)
                 .attr("y", function (d) { return y(d.PercentVoted2000); })
                 .attr("height", function (d) { return height - y(d.PercentVoted2000); });
 
