@@ -55,7 +55,7 @@
         d3.csv("electiondemographicdata.csv").then(function(data) {
 
             x.domain(data.map(function(d) { if (d.State == "US") { return d.Race; } }));
-            y.domain([0, d3.max(data, function(d) { return d.PercentVoted2000; })]);
+            y.domain([0, 100/*d3.max(data, function(d) { return d.PercentVoted2000; })*/]);
 
             svg.selectAll(".bar")
                 .data(data)
