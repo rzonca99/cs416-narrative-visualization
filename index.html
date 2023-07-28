@@ -35,13 +35,13 @@
             .text("Percent Voted by Race, 2000 General Election");
 
         svg.append("text")
-            .attr("transform", "translate(" + (width / 2) + " ," + (height - 50) + ")")
+            .attr("transform", "translate(" + (width / 2) + " ," + (height + 30) + ")")
             .style("text-anchor", "middle")
             .text("Race");
 
         svg.append("text")
             .attr("transform", "rotate(-90)")
-            .attr("x", -(height / 2))
+            .attr("x", -(height / 2) - 20)
             .attr("y", 15)
             .style("text-anchor", "middle")
             .text("Percentage");
