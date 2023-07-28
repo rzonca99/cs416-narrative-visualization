@@ -136,7 +136,7 @@
             .attr("fill", "#000")
             .attr("text-anchor", "start")
             .attr("font-weight", "bold")
-            .text("% of population voted");
+            .text("Unemployment rate");
 
         g.call(d3.axisBottom(x)
             .tickSize(13)
@@ -145,18 +145,16 @@
         .select(".domain")
             .remove();
 
-        const files = ["https://d3js.org/us-10m.v1.json", "electiondemographicdata.csv"];
-        const percentByState = new Map();
+        const files = ["https://d3js.org/us-10m.v1.json", "unemployment.tsv"];
+        const rateById = new Map();
 
         function row(d) {
-            if (d.Race == "Total") {
-                percentByState.set(d.State, +d.PercentVoted2000);
-            }
+            rateById.set(d.id, +d.rate);
         };
 
         const promises = [];
         files.forEach(function(url, index) {
-            promises.push(index ? d3.csv(url, row) : d3.json(url))
+            promises.push(index ? d3.tsv(url, row) : d3.json(url))
         });
 
         Promise.all(promises).then(function(data) {
@@ -168,11 +166,11 @@
         if (error) throw error;
 
         svg.append("g")
-            .attr("class", "states")
+            .attr("class", "counties")
             .selectAll("path")
-            .data(topojson.feature(us, us.objects.states).features)
+            .data(topojson.feature(us, us.objects.counties).features)
             .enter().append("path")
-            .attr("fill", function(d) { return color(d.rate = PercentVoted2000.get(d.id)); })
+            .attr("fill", function(d) { return color(d.rate = unemployment.get(d.id)); })
             .attr("d", path)
             .append("title")
             .text(function(d) { return d.rate + "%"; });
