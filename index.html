@@ -81,31 +81,31 @@
     <script>
         var margin = {top: 50, right: 50, bottom: 50, left: 50};
 
-        var width = 600 - margin.left - margin.right;
-        var height = 600 - margin.top - margin.bottom;
+        var width2 = 600 - margin.left - margin.right;
+        var height2 = 600 - margin.top - margin.bottom;
 
 
-        var svg = d3.select("#usbarchart").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
+        var svg2 = d3.select("#usbarchart").append("svg")
+            .attr("width", width2 + margin.left + margin.right)
+            .attr("height", height2 + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         svg.append("text")
-            .attr("x", width / 2)
+            .attr("x", width2 / 2)
             .attr("y", 0.4)
             .attr("text-anchor", "middle")
             .style("font-size", "16px")
             .text("Percent Voted by Race, 2000 General Election");
 
         svg.append("text")
-            .attr("transform", "translate(" + (width / 2) + " ," + (height + 30) + ")")
+            .attr("transform", "translate(" + (width2 / 2) + " ," + (height2 + 30) + ")")
             .style("text-anchor", "middle")
             .text("Race");
 
         svg.append("text")
             .attr("transform", "rotate(-90)")
-            .attr("x", -(height / 2))
+            .attr("x", -(height2 / 2))
             .attr("y", -30)
             .style("text-anchor", "middle")
             .text("Percentage");
@@ -127,7 +127,7 @@
             .style("z-index", "10")
             .style("visibility", "hidden")
 
-            svg.selectAll(".bar")
+            svg2.selectAll(".bar")
                 .data(data)
                 .enter().append("rect")
                 .attr("class", "bar")
@@ -148,11 +148,11 @@
 	            .on("mouseleave", function() { 
                     return tooltip.style("visibility", "hidden");});
 
-            svg.append("g")
+            svg2.append("g")
                 .attr("transform", "translate(0," + height + ")")
                 .call(d3.axisBottom(x));
 
-            svg.append("g")
+            svg2.append("g")
                 .call(d3.axisLeft(y));
         });
 
