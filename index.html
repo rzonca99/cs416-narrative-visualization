@@ -137,7 +137,7 @@
                     return y(d.PercentVoted2000); })
                 .attr("width", x.bandwidth)
                 .attr("height", function (d) { 
-                    return height - y(d.PercentVoted2000); })
+                    return height2 - y(d.PercentVoted2000); })
                 .on("mouseover", function(e,d) { 
                     return tooltip.style("visibility", "visible")
                                   .text(d.Race + ": " + d.PercentVoted2000 + "%");})
@@ -149,7 +149,7 @@
                     return tooltip.style("visibility", "hidden");});
 
             svg2.append("g")
-                .attr("transform", "translate(0," + height + ")")
+                .attr("transform", "translate(0," + height2 + ")")
                 .call(d3.axisBottom(x));
 
             svg2.append("g")
