@@ -138,7 +138,7 @@
                 .attr("width", x.bandwidth)
                 .attr("height", function (d) { 
                     return height2 - y(d.PercentVoted2000); })
-                .attr("transform", "translate(500,0)")
+                .attr("transform", "translate(1000,500)")
                 .on("mouseover", function(e,d) { 
                     return tooltip.style("visibility", "visible")
                                   .text(d.Race + ": " + d.PercentVoted2000 + "%");})
