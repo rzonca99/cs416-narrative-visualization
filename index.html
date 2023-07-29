@@ -10,7 +10,15 @@
 <style>
     .bar { 
         fill: steelblue; 
-    } 
+    }
+    #tooltip {
+        opacity: 0;
+        position: absolute;
+        text-align: center;
+        width: 60px; height: 40px;
+        background: white;
+        border: 0px;
+    }
 </style>
 
 <body>
@@ -31,6 +39,8 @@
 
         var width = 600 - margin.left - margin.right;
         var height = 600 - margin.top - margin.bottom;
+
+        var tooltip = d3.select("#tooltip");
 
         var svg = d3.select("#usbarchart").append("svg")
             .attr("width", width + margin.left + margin.right)
@@ -75,7 +85,14 @@
                 .attr("x", function (d) { return x(d.Race); })
                 .attr("width", x.bandwidth)
                 .attr("y", function (d) { return y(d.PercentVoted2000); })
-                .attr("height", function (d) { return height - y(d.PercentVoted2000); });
+                .attr("height", function (d) { return height - y(d.PercentVoted2000); })
+                .on("mouseover", function(d) { 
+                    tooltip.style("opacity, 1")
+                           .style("left",(d3.event.pageX)+"px")
+                           .style("top",(d3.event.pageY)+"px")
+                           .html(d.PercentVoted2000+"%");
+                })
+                .on("mouseout", function() { tooltip.style("opacity", 0) });
 
             svg.append("g")
                 .attr("transform", "translate(0," + height + ")")
@@ -93,7 +110,6 @@
     </script>
 
     <!-- <div id="choropleth"></div>
-    <svg id="choroplethsvg" width=800 height=300></svg>
     <script>
 
         var margin2 = {top: 50, right: 50, bottom: 50, left: 50};
