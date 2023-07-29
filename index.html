@@ -65,16 +65,16 @@
         var y = d3.scaleLinear()
             .range([height, 0]);
 
-        var tooltip = d3.select("body")
-            .append("div")
-            .style("position", "absolute")
-            .style("z-index", "10")
-            .style("visibility", "hidden")
-
         d3.csv("electiondemographicdata.csv").then(function(data) {
 
             x.domain(data.map(function(d) { if (d.State == "US") { return d.Race; } }));
             y.domain([0, 100]);
+
+            var tooltip = d3.select("body")
+            .append("div")
+            .style("position", "absolute")
+            .style("z-index", "10")
+            .style("visibility", "hidden")
 
             svg.selectAll(".bar")
                 .data(data)
