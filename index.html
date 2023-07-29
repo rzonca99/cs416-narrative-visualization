@@ -91,19 +91,19 @@
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        svg.append("text")
+        svg2.append("text")
             .attr("x", width2 / 2)
             .attr("y", 0.4)
             .attr("text-anchor", "middle")
             .style("font-size", "16px")
             .text("Percent Voted by Race, 2000 General Election");
 
-        svg.append("text")
+        svg2.append("text")
             .attr("transform", "translate(" + (width2 / 2) + " ," + (height2 + 30) + ")")
             .style("text-anchor", "middle")
             .text("Race");
 
-        svg.append("text")
+        svg2.append("text")
             .attr("transform", "rotate(-90)")
             .attr("x", -(height2 / 2))
             .attr("y", -30)
