@@ -85,25 +85,25 @@
         var height2 = 600 - margin.top - margin.bottom;
 
 
-        var svg2 = d3.select("#usbarchart").append("svg")
-            .attr("width", width2 + margin.left + margin.right)
-            .attr("height", height2 + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        // var svg2 = d3.select("#usbarchart").append("svg")
+        //     .attr("width", width2 + margin.left + margin.right)
+        //     .attr("height", height2 + margin.top + margin.bottom)
+        //     .append("g")
+        //     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        svg2.append("text")
+        svg.append("text")
             .attr("x", width2 / 2)
             .attr("y", 0.4)
             .attr("text-anchor", "middle")
             .style("font-size", "16px")
             .text("Percent Voted by Race, 2000 General Election");
 
-        svg2.append("text")
+        svg.append("text")
             .attr("transform", "translate(" + (width2 / 2) + " ," + (height2 + 30) + ")")
             .style("text-anchor", "middle")
             .text("Race");
 
-        svg2.append("text")
+        svg.append("text")
             .attr("transform", "rotate(-90)")
             .attr("x", -(height2 / 2))
             .attr("y", -30)
@@ -127,7 +127,7 @@
             .style("z-index", "10")
             .style("visibility", "hidden")
 
-            svg2.selectAll(".bar")
+            svg.selectAll(".bar")
                 .data(data)
                 .enter().append("rect")
                 .attr("class", "bar")
@@ -148,11 +148,11 @@
 	            .on("mouseleave", function() { 
                     return tooltip.style("visibility", "hidden");});
 
-            svg2.append("g")
+            svg.append("g")
                 .attr("transform", "translate(0," + height2 + ")")
                 .call(d3.axisBottom(x));
 
-            svg2.append("g")
+            svg.append("g")
                 .call(d3.axisLeft(y));
         });
 
