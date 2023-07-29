@@ -70,7 +70,6 @@
             .style("position", "absolute")
             .style("z-index", "10")
             .style("visibility", "hidden")
-            .text("a simple tooltip");
 
         d3.csv("electiondemographicdata.csv").then(function(data) {
 
@@ -85,8 +84,8 @@
                 .attr("y", function (d) { return y(d.PercentVoted2000); })
                 .attr("width", x.bandwidth)
                 .attr("height", function (d) { return height - y(d.PercentVoted2000); })
-                .on("mouseover", function(){return tooltip.style("visibility", "visible");})
-	            .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+                .on("mouseover", function(d) {return tooltip.style("visibility", "visible").text(d.Race + ": " + d.PercentVoted2000 + "%");})
+	            .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px").text(d.Race + ": " + d.PercentVoted2000 + "%");})
 	            .on("mouseleave", function(){return tooltip.style("visibility", "hidden");});
 
             svg.append("g")
