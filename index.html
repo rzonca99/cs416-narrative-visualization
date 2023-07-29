@@ -51,7 +51,9 @@
         Promise.all([
         d3.json("states.json"),
         d3.csv("electiondemographicdata.csv", function(d) {
-            data.set(d.State, +d.PercentVoted2000)
+            if (d.Race == "Total") {
+                data.set(d.State, +d.PercentVoted2000)
+            }
         })
         ]).then(function(loadData){
             let topo = loadData[0]
