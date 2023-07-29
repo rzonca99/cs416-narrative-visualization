@@ -65,38 +65,12 @@
         var y = d3.scaleLinear()
             .range([height, 0]);
 
-        var Tooltip = d3.select("#usbarchart")
+        var tooltip = d3.select("body")
             .append("div")
-            .style("opacity", 0)
-            .attr("class", "tooltip")
-            .style("background-color", "white")
-            .style("border", "solid")
-            .style("border-width", "2px")
-            .style("border-radius", "5px")
-            .style("padding", "5px")
-
-        var mouseover = function(d) {
-            Tooltip
-            .style("opacity", 1)
-            d3.select(this)
-            .style("stroke", "black")
-            .style("opacity", 1)
-        }
-
-        var mousemove = function(d) {
-            Tooltip
-            .html("The exact value of<br>this cell is: " + d.value)
-            .style("left", (d3.mouse(this)[0]+70) + "px")
-            .style("top", (d3.mouse(this)[1]) + "px")
-        }
-
-        var mouseleave = function(d) {
-            Tooltip
-            .style("opacity", 0)
-            d3.select(this)
-            .style("stroke", "none")
-            .style("opacity", 0.8)
-            }
+            .style("position", "absolute")
+            .style("z-index", "10")
+            .style("visibility", "hidden")
+            .text("a simple tooltip");
 
         d3.csv("electiondemographicdata.csv").then(function(data) {
 
@@ -111,9 +85,9 @@
                 .attr("y", function (d) { return y(d.PercentVoted2000); })
                 .attr("width", x.bandwidth)
                 .attr("height", function (d) { return height - y(d.PercentVoted2000); })
-                .on("mouseover", mouseover)
-                .on("mousemove", mousemove)
-                .on("mouseleave", mouseleave)
+                .on("mouseover", function(){return tooltip.style("visibility", "visible");})
+	            .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+	            .on("mouseleave", function(){return tooltip.style("visibility", "hidden");});
 
             svg.append("g")
                 .attr("transform", "translate(0," + height + ")")
