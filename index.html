@@ -95,14 +95,14 @@
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         svg2.append("text")
-            .attr("x", -(width2 / 2))
+            .attr("x", (width2 / 2))
             .attr("y", 0.4)
             .attr("text-anchor", "middle")
             .style("font-size", "16px")
             .text("Percent Voted by Race, 2000 General Election");
 
         svg2.append("text")
-            .attr("transform", "translate(" + -(width2 / 2) + " ," + (height2 + 30) + ")")
+            .attr("transform", "translate(" + (width2 / 2) + " ," + (height2 + 30) + ")")
             .style("text-anchor", "middle")
             .text("Race");
 
