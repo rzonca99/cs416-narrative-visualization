@@ -58,7 +58,7 @@
         Promise.all([
         d3.json("states.json"),
         d3.csv("electiondemographicdata.csv", function(d) {
-            if (d.Race == "Total") {
+            if (d.Race == "Total" && d.State != "US") {
                 data.set(d.State, +d.PercentVoted2000)
             }
         })
