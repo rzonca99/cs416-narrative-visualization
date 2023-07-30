@@ -77,14 +77,14 @@
         </script>
 
     <div id="usbarchart"></div>
-    <svg width=300 height=300></svg>
+    <svg id="usbarchart_svg" width=300 height=300></svg>
     <script>
         var margin = {top: 50, right: 50, bottom: 50, left: 50};
 
         var width2 = 600 - margin.left - margin.right;
         var height2 = 550 - margin.top - margin.bottom;
 
-        var svg2 = d3.select("#usbarchart").append("svg")
+        var svg2 = d3.select("#usbarchart_svg").append("svg")
             .attr("width", width2 + margin.left + margin.right)
             .attr("height", height2 + margin.top + margin.bottom)
             .append("g")
@@ -137,7 +137,7 @@
                 .attr("width", x.bandwidth)
                 .attr("height", function (d) { 
                     return height2 - y(d.PercentVoted2000); })
-                .attr("transform", "translate(500,0)")
+                // .attr("transform", "translate(500,0)")
                 // .attr("transform", "translate(" + margin.right + "," + margin.top + ")")
                 .on("mouseover", function(e,d) { 
                     return tooltip.style("visibility", "visible")
