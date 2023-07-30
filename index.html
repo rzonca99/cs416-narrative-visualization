@@ -87,12 +87,12 @@
         var height2 = 550 - margin.top - margin.bottom;
 
         var svg2 = d3.select("#usbarchart_svg").append("svg")
-            width2 = +svg.attr("width"),
-            height2 = +svg.attr("height");
-            // .attr("width", width2 + margin.left + margin.right)
-            // .attr("height", height2 + margin.top + margin.bottom)
-            // .append("g")
-            // .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            // width2 = +svg.attr("width"),
+            // height2 = +svg.attr("height");
+            .attr("width", width2 + margin.left + margin.right)
+            .attr("height", height2 + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         svg2.append("text")
             .attr("x", width2 / 2)
