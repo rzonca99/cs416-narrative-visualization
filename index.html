@@ -76,7 +76,7 @@
               )
               // set the color of each country
               .attr("fill", function (d) {
-                d.total = data.get(d.State) || 0;
+                d.total = data.get(d.STATE) || 0;
                 return colorScale(d.PercentVoted2000);
               })
         })
