@@ -76,6 +76,7 @@
               )
               // set the color of each country
               .attr("fill", function (d) {
+                console.log(d.State);
                 d.total = data.get(d.State); //|| 0;
                 console.log(d.total);
                 return colorScale(d.total);
