@@ -59,7 +59,7 @@
         d3.json("states.json"),
         d3.csv("electiondemographicdata.csv", function(d) {
             if (d.Race == "Total") {
-                data.set(d.State, +d.PercentVoted2000)
+                data.set(d.state, +d.PercentVoted2000)
             }
         })
         ]).then(function(loadData){
@@ -76,8 +76,8 @@
               )
               // set the color of each country
               .attr("fill", function (d) {
-                d.total = data.get(d.STATE) || 0;
-                return colorScale(d.PercentVoted2000);
+                d.total = data.get(d.state) || 0;
+                return colorScale(d.total);
               })
         })
         
@@ -131,10 +131,10 @@
             y.domain([0, 100]);
 
             var tooltip = d3.select("body")
-            .append("div")
-            .style("position", "absolute")
-            .style("z-index", "10")
-            .style("visibility", "hidden")
+                .append("div")
+                .style("position", "absolute")
+                .style("z-index", "10")
+                .style("visibility", "hidden")
 
             svg.selectAll(".bar")
                 .data(data)
