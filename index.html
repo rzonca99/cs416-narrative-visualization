@@ -77,7 +77,7 @@
         </script>
 
     <div id="usbarchart"></div>
-    <svg id="usbarchart_svg" width=600 height=550></svg>
+    <svg id="usbarchart_svg" width=600 height=550 preserveAspectRatio="xMaxYMid meet"></svg>
     <script>
         var margin = {top: 50, right: 50, bottom: 50, left: 50};
 
@@ -137,7 +137,7 @@
                 .attr("width", x.bandwidth)
                 .attr("height", function (d) { 
                     return height2 - y(d.PercentVoted2000); })
-                .attr("transform", "translate(500,0)")
+                // .attr("transform", "translate(500,0)")
                 // .attr("transform", "translate(" + margin.right + "," + margin.top + ")")
                 .on("mouseover", function(e,d) { 
                     return tooltip.style("visibility", "visible")
