@@ -7,6 +7,14 @@ body {
     float: right;
 }
 
+#usbarchart_svg {
+    float: right;
+}
+
+#choropleth {
+    float: left;
+}
+
 #choropleth_svg {
     float: left;
 }
