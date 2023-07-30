@@ -81,41 +81,43 @@
     <div id="usbarchart">
     <svg id="usbarchart_svg" width=600 height=550 preserveAspectRatio="xMaxYMid meet"></svg>
     <script>
-        var margin = {top: 50, right: 50, bottom: 50, left: 50};
+        // var margin = {top: 50, right: 50, bottom: 50, left: 50};
 
-        var width2 = 600 - margin.left - margin.right;
-        var height2 = 550 - margin.top - margin.bottom;
+        // var width2 = 600 - margin.left - margin.right;
+        // var height2 = 550 - margin.top - margin.bottom;
 
         var svg2 = d3.select("#usbarchart_svg").append("svg")
-            .attr("width", width2 + margin.left + margin.right)
-            .attr("height", height2 + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            width = +svg.attr("width"),
+            height = +svg.attr("height");
+            // .attr("width", width2 + margin.left + margin.right)
+            // .attr("height", height2 + margin.top + margin.bottom)
+            // .append("g")
+            // .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         svg2.append("text")
-            .attr("x", width2 / 2)
+            .attr("x", width / 2)
             .attr("y", 0.4)
             .attr("text-anchor", "middle")
             .style("font-size", "16px")
             .text("Percent Voted by Race, 2000 General Election");
 
         svg2.append("text")
-            .attr("transform", "translate(" + (width2 / 2) + " ," + (height2 + 30) + ")")
+            .attr("transform", "translate(" + (width / 2) + " ," + (height + 30) + ")")
             .style("text-anchor", "middle")
             .text("Race");
 
         svg2.append("text")
             .attr("transform", "rotate(-90)")
-            .attr("x", -(height2 / 2))
+            .attr("x", -(height / 2))
             .attr("y", -30)
             .style("text-anchor", "middle")
             .text("Percentage");
 
         var x = d3.scaleBand()
-            .range([0, width2]).padding(0.4);
+            .range([0, width]).padding(0.4);
 
         var y = d3.scaleLinear()
-            .range([height2, 0]);
+            .range([height, 0]);
 
         d3.csv("electiondemographicdata.csv").then(function(data) {
 
@@ -138,7 +140,7 @@
                     return y(d.PercentVoted2000); })
                 .attr("width", x.bandwidth)
                 .attr("height", function (d) { 
-                    return height2 - y(d.PercentVoted2000); })
+                    return height - y(d.PercentVoted2000); })
                 // .attr("transform", "translate(500,0)")
                 // .attr("transform", "translate(" + margin.right + "," + margin.top + ")")
                 .on("mouseover", function(e,d) { 
@@ -152,7 +154,7 @@
                     return tooltip.style("visibility", "hidden");});
 
             svg.append("g")
-                .attr("transform", "translate(0," + height2 + ")")
+                .attr("transform", "translate(0," + height + ")")
                 .call(d3.axisBottom(x));
 
             svg.append("g")
