@@ -103,11 +103,11 @@
                 .attr("height", function (d) { return height - y(d.PercentVoted2004); })
                 .on("mouseover", function(e,d) { 
                     return tooltip.style("visibility", "visible")
-                                  .text(d.Race + ": " + d.PercentVoted2000 + "%");})
+                                  .text(d.Race + ": " + d.PercentVoted2004 + "%");})
 	            .on("mousemove", function(e,d) { 
                     return tooltip.style("top", (event.pageY-10)+"px")
                                   .style("left",(event.pageX+10)+"px")
-                                  .text(d.Race + ": " + d.PercentVoted2000 + "%");})
+                                  .text(d.Race + ": " + d.PercentVoted2004 + "%");})
 	            .on("mouseleave", function() { 
                     return tooltip.style("visibility", "hidden");});
 
