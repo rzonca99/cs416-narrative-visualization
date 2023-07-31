@@ -46,7 +46,7 @@
             </div>
 
         <div id="choropleth">
-    <svg id="choropleth_svg" width="775" height="540" preserveAspectRatio="xMinYMid meet"></svg>
+    <svg id="choropleth_svg" width="775" height="525" preserveAspectRatio="xMinYMid meet"></svg>
     <script>
 
         // The svg
@@ -64,7 +64,7 @@
         // Data and color scale
         let data = new Map()
         const colorScale = d3.scaleThreshold()
-          .domain([40, 45, 50, 55, 60, 65, 70])
+        .domain([0, 10, 20, 40, 50, 60, 70, 80])
           .range(d3.schemeBlues[7]);
         
         // Load external data and boot
