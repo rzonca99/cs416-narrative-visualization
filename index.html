@@ -238,14 +238,23 @@
                 })
                 .attr("width", x.bandwidth)
                 .attr("height", function (d) { 
-                    return height2 - y(d.PercentVoted2000); })
+                    if (d.State == "US") {
+                        return height2 - y(d.PercentVoted2000);
+                    }
+                })
                 .on("mouseover", function(e,d) { 
-                    return tooltip.style("visibility", "visible")
-                                  .text(d.Race + ": " + d.PercentVoted2000 + "%");})
+                    if (d.State == "US") {
+                        return tooltip.style("visibility", "visible")
+                                      .text(d.Race + ": " + d.PercentVoted2000 + "%");
+                    }
+                })
 	            .on("mousemove", function(e,d) { 
-                    return tooltip.style("top", (event.pageY-10)+"px")
-                                  .style("left",(event.pageX+10)+"px")
-                                  .text(d.Race + ": " + d.PercentVoted2000 + "%");})
+                    if (d.State == "US") {
+                        return tooltip.style("top", (event.pageY-10)+"px")
+                                      .style("left",(event.pageX+10)+"px")
+                                      .text(d.Race + ": " + d.PercentVoted2000 + "%");
+                    }
+                })
 	            .on("mouseleave", function() { 
                     return tooltip.style("visibility", "hidden");});
 
