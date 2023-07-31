@@ -89,6 +89,7 @@
     <div id="usbarchart">
     <svg id="usbarchart_svg" width=600 height=550 preserveAspectRatio="xMaxYMid meet"></svg>
     <select id="dropdown">
+        <option value="Select a State">Select</option>
         <option value="Alabama">Alabama</option>
         <option value="Alaska">Alaska</option>
         <option value="Arizona">Arizona</option>
@@ -215,6 +216,14 @@
                 .style("z-index", "10")
                 .style("visibility", "hidden")
 
+            // Create axes
+            svg.append("g")
+                .attr("transform", "translate(0," + height2 + ")")
+                .call(d3.axisBottom(x));
+
+            svg.append("g")
+                .call(d3.axisLeft(y));
+
             // Create graph
             svg.selectAll(".bar")
                 .data(data)
@@ -237,13 +246,6 @@
 	            .on("mouseleave", function() { 
                     return tooltip.style("visibility", "hidden");});
 
-            // Create axes
-            svg.append("g")
-                .attr("transform", "translate(0," + height2 + ")")
-                .call(d3.axisBottom(x));
-
-            svg.append("g")
-                .call(d3.axisLeft(y));
         });
 
         var format = function(d) {
