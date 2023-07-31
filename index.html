@@ -197,7 +197,7 @@
                .enter()
                .append("option");
 
-            options.text(function (d) { console.log(d); return d.State; })
+            options.text(function (d) { return d.State; })
                 .attr("value", function (d) { return d.State; });
 
             dropDown.on("change", menuChanged);
@@ -212,6 +212,7 @@
                 .style("position", "absolute")
                 .style("z-index", "10")
                 .style("visibility", "hidden")
+                .style("border")
 
             // Create axes
             svg2.append("g")
@@ -273,7 +274,6 @@
 
             jsonOutside.features.forEach(function (d) { 
 
-                console.log(d);
                 //if (selectedValue === d.properties.State) {
 
                     alert(selectedValue);  //remove this line when things are working!
