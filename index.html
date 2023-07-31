@@ -93,6 +93,7 @@
     <svg id="usbarchart_svg" width=600 height=550 preserveAspectRatio="xMaxYMid meet"></svg>
     <select id="selectButton"></select>
     <script>
+
         var margin = {top: 50, right: 50, bottom: 50, left: 50};
 
         var width2 = 600 - margin.left - margin.right;
@@ -173,10 +174,10 @@
                 .call(d3.axisLeft(y));
         });
 
-        // var format = function(d) {
-        //     d = d / 1000000;
-        //     return d3.format(',.02f')(d) + 'M';
-        // }
+        var format = function(d) {
+            d = d / 1000000;
+            return d3.format(',.02f')(d) + 'M';
+        }
 
     </script>
     </div>
