@@ -17,8 +17,10 @@
 <body>
     <div id="header">
     <h1>Voter Demographics, 2000 General Election</h1>
+    <h2>George W. Bush (R) vs Al Gore (D)</h2>
     <p>Welcome! This visualization shows demographic data for US presidential elections in the 21st century.<br>
-    The map on the left shows the percent of people in each state who voted in this election. A darker color means more people voted.<br>
+    The map on the left shows the percent of people in each state who voted in this election (minus Alaska and Hawaii).<br>
+    A darker color means more people voted.<br>
     The bar graph on the right shows the percent of people of each race who voted in this election.<br>
     By default, the bar graph shows data for the whole US.
     Select a state from the drop-down menu to see that state's election demographic data.<br>
@@ -33,7 +35,7 @@
 
     <div id="graphs">
     <div id="choropleth">
-    <svg id="choropleth_svg" width="775" height="550" preserveAspectRatio="xMinYMid meet"></svg>
+    <svg id="choropleth_svg" width="775" height="540" preserveAspectRatio="xMinYMid meet"></svg>
     <script>
 
         // The svg
