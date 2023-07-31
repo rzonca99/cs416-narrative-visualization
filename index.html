@@ -90,7 +90,7 @@
     <svg id="usbarchart_svg" width=600 height=550 preserveAspectRatio="xMaxYMid meet"></svg>
     <select id="dropdown">
         <option value="Select a State">Select</option>
-        <option value="United States">United States</option>
+        <option value="United States">US</option>
         <option value="Alabama">Alabama</option>
         <option value="Alaska">Alaska</option>
         <option value="Arizona">Arizona</option>
@@ -200,6 +200,8 @@
             options.text(function (d) { console.log(d); return d.State; })
                 .attr("value", function (d) { return d.State; });
 
+            dropDown.on("change", menuChanged);
+
             // Set domains
             x.domain(data.map(function(d) { if (d.State == "US") { return d.Race; } }));
             y.domain([0, 100]);
@@ -225,9 +227,15 @@
                 .enter().append("rect")
                 .attr("class", "bar")
                 .attr("x", function (d) { 
-                    return x(d.Race); })
+                    if (d.State == "US") {
+                        return x(d.Race); 
+                    }
+                })
                 .attr("y", function (d) { 
-                    return y(d.PercentVoted2000); })
+                    if (d.State == "US") {
+                        return y(d.PercentVoted2000);
+                    }
+                })
                 .attr("width", x.bandwidth)
                 .attr("height", function (d) { 
                     return height2 - y(d.PercentVoted2000); })
@@ -246,6 +254,26 @@
         var format = function(d) {
             d = d / 1000000;
             return d3.format(',.02f')(d) + 'M';
+        }
+
+        // Event handler for dropdown menu
+        function menuChanged() {
+
+            var selectedValue = d3.event.target.value;  
+
+            jsonOutside.features.forEach(function (d) { 
+
+                console.log(d);
+                if (selectedValue === d.properties.State) {
+
+                    alert(selectedValue)  //remove this line when things are working!
+
+                    svg2.selectAll(".bar").remove();
+
+
+                    
+                };
+            })
         }
 
     </script>
