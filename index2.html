@@ -26,6 +26,7 @@
 <body>
         <div id="header">
             <h1>Voter Demographics, 2004 General Election</h1>
+            <h2>George W. Bush (Incumbent, R) vs John Kerry (D)</h2>
             <p>Welcome! This visualization shows demographic data for US presidential elections in the 21st century.<br>
             The map on the left shows the percent of people in each state who voted in this election. A darker color means more people voted.<br>
             The bar graph on the right shows the percent of people of each race who voted in this election.<br>
@@ -44,45 +45,98 @@
             </script>
             </div>
 
-    
+        <div id="choropleth">
+    <svg id="choropleth_svg" width="775" height="540" preserveAspectRatio="xMinYMid meet"></svg>
+    <script>
+
+        // The svg
+        const svg = d3.select("svg"),
+          width = +svg.attr("width"),
+          height = +svg.attr("height");
+        
+        // Map and projection
+        const path = d3.geoPath();
+        const projection = d3.geoMercator()
+          .scale(750)
+          .center([-95,35])
+          .translate([width / 2, height / 2]);
+        
+        // Data and color scale
+        let data = new Map()
+        const colorScale = d3.scaleThreshold()
+          .domain([40, 45, 50, 55, 60, 65, 70])
+          .range(d3.schemeBlues[7]);
+        
+        // Load external data and boot
+        Promise.all([
+        d3.json("states.json"),
+        d3.csv("electiondemographicdata.csv", function(d) {
+            if (d.Race == "Total" && d.State != "US") {
+                data.set(d.State, +d.PercentVoted2004)
+            }
+        })
+        ]).then(function(loadData){
+            let topo = loadData[0]
+        
+            console.log("fixed?");
+
+          // Draw the map
+          svg.append("g")
+            .selectAll("path")
+            .data(topo.features)
+            .join("path")
+              // draw each country
+              .attr("d", d3.geoPath()
+                .projection(projection)
+              )
+              // set the color of each country
+              .attr("fill", function (d) {
+                d.total = data.get(d.properties.NAME); //|| 0;
+                console.log(d.total);
+                return colorScale(d.total);
+              })
+        })
+        
+        </script>
+    </div>
     <div id="usbarchart"></div>
     <svg width=300 height=300></svg>
     <script>
         var margin = {top: 50, right: 50, bottom: 50, left: 50};
 
-        var width = 600 - margin.left - margin.right;
-        var height = 600 - margin.top - margin.bottom;
+        var width2 = 600 - margin.left - margin.right;
+        var height2 = 600 - margin.top - margin.bottom;
 
-        var svg = d3.select("#usbarchart").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
+        var svg2 = d3.select("#usbarchart").append("svg")
+            .attr("width", width2 + margin.left + margin.right)
+            .attr("height", height2 + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         svg.append("text")
-            .attr("x", width / 2)
+            .attr("x", width2 / 2)
             .attr("y", 0.4)
             .attr("text-anchor", "middle")
             .style("font-size", "16px")
             .text("Percent Voted by Race, 2004 General Election");
 
         svg.append("text")
-            .attr("transform", "translate(" + (width / 2) + " ," + (height + 30) + ")")
+            .attr("transform", "translate(" + (width2 / 2) + " ," + (height2 + 30) + ")")
             .style("text-anchor", "middle")
             .text("Race");
 
         svg.append("text")
             .attr("transform", "rotate(-90)")
-            .attr("x", -(height / 2))
+            .attr("x", -(height2 / 2))
             .attr("y", -30)
             .style("text-anchor", "middle")
             .text("Percentage");
 
         var x = d3.scaleBand()
-            .range([0, width]).padding(0.4);
+            .range([0, width2]).padding(0.4);
 
         var y = d3.scaleLinear()
-            .range([height, 0]);
+            .range([height2, 0]);
 
         d3.csv("electiondemographicdata.csv").then(function(data) {
 
@@ -102,7 +156,7 @@
                 .attr("x", function (d) { return x(d.Race); })
                 .attr("width", x.bandwidth)
                 .attr("y", function (d) { return y(d.PercentVoted2004); })
-                .attr("height", function (d) { return height - y(d.PercentVoted2004); })
+                .attr("height", function (d) { return height2 - y(d.PercentVoted2004); })
                 .on("mouseover", function(e,d) { 
                     return tooltip.style("visibility", "visible")
                                   .text(d.Race + ": " + d.PercentVoted2004 + "%");})
@@ -114,7 +168,7 @@
                     return tooltip.style("visibility", "hidden");});
 
             svg.append("g")
-                .attr("transform", "translate(0," + height + ")")
+                .attr("transform", "translate(0," + height2 + ")")
                 .call(d3.axisBottom(x));
 
             svg.append("g")
