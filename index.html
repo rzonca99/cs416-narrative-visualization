@@ -66,8 +66,6 @@
         })
         ]).then(function(loadData){
             let topo = loadData[0]
-        
-            console.log("fixed?");
 
           // Draw the map
           svg.append("g")
@@ -81,7 +79,6 @@
               // set the color of each country
               .attr("fill", function (d) {
                 d.total = data.get(d.properties.NAME); //|| 0;
-                console.log(d.total);
                 return colorScale(d.total);
               })
         })
@@ -91,7 +88,58 @@
 
     <div id="usbarchart">
     <svg id="usbarchart_svg" width=600 height=550 preserveAspectRatio="xMaxYMid meet"></svg>
-    <select id="selectButton"></select>
+    <select id="dropdown">
+        <option value="Alabama">Alabama</option>
+        <option value="Alaska">Alaska</option>
+        <option value="Arizona">Arizona</option>
+        <option value="Arkansas">Arkansas</option>
+        <option value="California">California</option>
+        <option value="Colorado">Colorado</option>
+        <option value="Connecticut">Connecticut</option>
+        <option value="Delaware">Delaware</option>
+        <option value="Florida">Florida</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Hawaii">Hawaii</option>
+        <option value="Idaho">Idaho</option>
+        <option value="Illinois">Illinois</option>
+        <option value="Indiana">Indiana</option>
+        <option value="Iowa">Iowa</option>
+        <option value="Kansas">Kansas</option>
+        <option value="Kentucky">Kentucky</option>
+        <option value="Louisiana">Louisiana</option>
+        <option value="Maine">Maine</option>
+        <option value="Maryland">Maryland</option>
+        <option value="Massachusetts">Massachusetts</option>
+        <option value="Michigan">Michigan</option>
+        <option value="Minnesota">Minnesota</option>
+        <option value="Mississippi">Mississippi</option>
+        <option value="Missouri">Missouri</option>
+        <option value="Montana">Montana</option>
+        <option value="Nebraska">Nebraska</option>
+        <option value="Nevada">Nevada</option>
+        <option value="New Hampshire">New Hampshire</option>
+        <option value="New Jersey">New Jersey</option>
+        <option value="New Mexico">New Mexico</option>
+        <option value="New York">New York</option>
+        <option value="North Carolina">North Carolina</option>
+        <option value="North Dakota">North Dakota</option>
+        <option value="Ohio">Ohio</option>
+        <option value="Oklahoma">Oklahoma</option>
+        <option value="Oregon">Oregon</option>
+        <option value="Pennsylvania">Pennsylvania</option>
+        <option value="Rhode Island">Rhode Island</option>
+        <option value="South Carolina">South Carolina</option>
+        <option value="South Dakota">South Dakota</option>
+        <option value="Tennessee">Tennessee</option>
+        <option value="Texas">Texas</option>
+        <option value="Utah">Utah</option>
+        <option value="Vermont">Vermont</option>
+        <option value="Virginia">Virginia</option>
+        <option value="Washington">Washington</option>
+        <option value="West Virginia">West Virginia</option>
+        <option value="Wisconsin">Wisconsin</option>
+        <option value="Wyoming">Wyoming</option>
+    </select>
     <script>
 
         var margin = {top: 50, right: 50, bottom: 50, left: 50};
@@ -107,6 +155,7 @@
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+        // Add labels
         svg2.append("text")
             .attr("x", (width2 / 2))
             .attr("y", 0.4)
@@ -134,15 +183,39 @@
 
         d3.csv("electiondemographicdata.csv").then(function(data) {
 
+            // Create dropdown menu
+            function mydropDown(data) {
+                var states = [];
+                for (var i in data) {
+                    states.push(data[i].key);
+                };
+
+            var dropDown = d3.select("#dropdown")
+                .append("select")
+                .attr("class", "selection")
+                .attr("name", "dropdown");
+
+            var options = dropDown.selectAll("option")
+                .data(data)
+                .enter()
+                .append("option");
+                
+            options.text(function(d) { return d.key; })
+                .attr("value", function(d) { return d.values;});
+            }
+
+            // Set domains
             x.domain(data.map(function(d) { if (d.State == "US") { return d.Race; } }));
             y.domain([0, 100]);
 
+            // Declare tooltips
             var tooltip = d3.select("body")
                 .append("div")
                 .style("position", "absolute")
                 .style("z-index", "10")
                 .style("visibility", "hidden")
 
+            // Create graph
             svg.selectAll(".bar")
                 .data(data)
                 .enter().append("rect")
@@ -154,8 +227,6 @@
                 .attr("width", x.bandwidth)
                 .attr("height", function (d) { 
                     return height2 - y(d.PercentVoted2000); })
-                // .attr("transform", "translate(500,0)")
-                // .attr("transform", "translate(" + margin.right + "," + margin.top + ")")
                 .on("mouseover", function(e,d) { 
                     return tooltip.style("visibility", "visible")
                                   .text(d.Race + ": " + d.PercentVoted2000 + "%");})
@@ -166,6 +237,7 @@
 	            .on("mouseleave", function() { 
                     return tooltip.style("visibility", "hidden");});
 
+            // Create axes
             svg.append("g")
                 .attr("transform", "translate(0," + height2 + ")")
                 .call(d3.axisBottom(x));
