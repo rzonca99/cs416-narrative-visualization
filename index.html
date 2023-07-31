@@ -75,13 +75,14 @@
                 .projection(projection)
               )
               // set the color of each country
-              .attr("fill", function () {
+              .attr("fill", function (d) {
                 // console.log("hello");
                 // d.total = data.get(d.NAME); //|| 0;
                 // console.log(d.NAME);
                 // return colorScale(d.total);
                 console.log("hello there");
-                return colorScale(data.get(State));
+                console.log(d);
+                return colorScale(d.get(State));
               })
         })
         
