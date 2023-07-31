@@ -5,10 +5,12 @@ body {
 
 #usbarchart {
     float: right;
+    position:relative;
 }
 
 #usbarchart_svg {
     float: right;
+    position: relative;
 }
 
 #choropleth {
