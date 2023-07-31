@@ -51,7 +51,7 @@
         // Data and color scale
         let data = new Map()
         const colorScale = d3.scaleThreshold()
-          .domain([20, 30, 40, 50, 60, 70])
+          .domain([40, 45, 50, 55, 60, 65, 70])
           .range(d3.schemeBlues[7]);
         
         // Load external data and boot
@@ -66,7 +66,7 @@
             let topo = loadData[0]
         
             console.log("fixed?");
-            
+
           // Draw the map
           svg.append("g")
             .selectAll("path")
@@ -78,6 +78,8 @@
               )
               // set the color of each country
               .attr("fill", function (d) {
+                console.log(data.get(State));
+                console.log(d.properties.NAME);
                 d.total = data.get(d.properties.NAME); //|| 0;
                 console.log(d.total);
                 return colorScale(d.total);
