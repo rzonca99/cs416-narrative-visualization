@@ -156,6 +156,9 @@
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+        var g = svg2.append("g")
+            .attr("transform", "translate(" + 100 + "," + 100 + ")");
+
         // Add labels
         svg2.append("text")
             .attr("x", (width2 / 2))
@@ -217,15 +220,15 @@
                 .style("visibility", "hidden")
 
             // Create axes
-            svg.append("g")
+            svg2.append("g")
                 .attr("transform", "translate(0," + height2 + ")")
                 .call(d3.axisBottom(x));
 
-            svg.append("g")
+            svg2.append("g")
                 .call(d3.axisLeft(y));
 
             // Create graph
-            svg.selectAll(".bar")
+            svg2.selectAll(".bar")
                 .data(data)
                 .enter().append("rect")
                 .attr("class", "bar")
