@@ -4,49 +4,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voting Demographic Data 2000-2020</title>
     <link rel="stylesheet" href="styles.css">
-    <script src='https://d3js.org/d3.v5.min.js'></script>
-    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-    <script src="https://d3js.org/topojson.v2.min.js"></script>
+    <script src='https://d3js.org/d3.v6.js'></script>
 </head>
 
 <style>
     .bar { 
         fill: steelblue; 
     }
-    .counties {
-        fill: none;
-    }
-    .states {
-        fill: none;
-        stroke: #fff;
-        stroke-linejoin: round;
-    } 
+
 </style>
 
 <body>
-        <div id="header">
-            <h1>Voter Demographics, 2004 General Election</h1>
-            <h2>George W. Bush (Incumbent, R) vs John Kerry (D)</h2>
-            <p>Welcome! This visualization shows demographic data for US presidential elections in the 21st century.<br>
-            The map on the left shows the percent of people in each state who voted in this election. A darker color means more people voted.<br>
-            The bar graph on the right shows the percent of people of each race who voted in this election.<br>
-            By default, the bar graph shows data for the whole US.
-            Select a state from the drop-down menu to see that state's election demographic data.<br>
-            Or click the buttons to see the data for other presidential elections!</p>
-            <button id="button2000_prev" class="submit-button">2000 Election</button>
-            <button id="button2008_next" class="submit-button">2008 Election</button>
-            <script type="text/javascript">
-                document.getElementById("button2000_prev").onclick = function () {
-                    location.href = "/cs416-narrative-visualization/index.html";
-                };
-                document.getElementById("button2008_next").onclick = function () {
-                location.href = "/cs416-narrative-visualization/index3.html";
-                };
-            </script>
-            </div>
+    <div id="header">
+    <h1>Voter Demographics, 2000 General Election</h1>
+    <h2>George W. Bush (R) vs Al Gore (D)</h2>
+    <p>Welcome! This visualization shows demographic data for US presidential elections in the 21st century.<br>
+    The map on the left shows the percent of people in each state who voted in this election (minus Alaska and Hawaii).<br>
+    A darker color means more people voted.<br>
+    The bar graph on the right shows the percent of people of each race who voted in this election.<br>
+    By default, the bar graph shows data for the whole US.
+    Select a state from the drop-down menu to see that state's election demographic data.<br>
+    Or click the buttons to see the data for other presidential elections!</p>
+    <button id="button2004_next" class="submit-button">2004 Election</button>
+    <script type="text/javascript">
+        document.getElementById("button2004_next").onclick = function () {
+            location.href = "/cs416-narrative-visualization/index2.html";
+        };
+    </script>
+    </div>
 
-        <div id="choropleth">
-    <svg id="choropleth_svg" width="775" height="525" preserveAspectRatio="xMinYMid meet"></svg>
+    <div id="graphs">
+    <div id="choropleth">
+    <svg id="choropleth_svg" width="775" height="540" preserveAspectRatio="xMinYMid meet"></svg>
     <script>
 
         // The svg
@@ -64,7 +53,7 @@
         // Data and color scale
         let data = new Map()
         const colorScale = d3.scaleThreshold()
-          .domain([40, 45, 50, 55, 60, 65, 70])
+          .domain([0, 10, 20, 40, 50, 60, 70, 80])
           .range(d3.schemeBlues[7]);
         
         // Load external data and boot
@@ -72,7 +61,7 @@
         d3.json("states.json"),
         d3.csv("electiondemographicdata.csv", function(d) {
             if (d.Race == "Total" && d.State != "US") {
-                data.set(d.State, +d.PercentVoted2004)
+                data.set(d.State, +d.PercentVoted2000)
             }
         })
         ]).then(function(loadData){
@@ -99,33 +88,36 @@
         
         </script>
     </div>
-    <div id="usbarchart"></div>
-    <svg width=300 height=300></svg>
+
+    <div id="usbarchart">
+    <svg id="usbarchart_svg" width=600 height=550 preserveAspectRatio="xMaxYMid meet"></svg>
     <script>
         var margin = {top: 50, right: 50, bottom: 50, left: 50};
 
         var width2 = 600 - margin.left - margin.right;
-        var height2 = 600 - margin.top - margin.bottom;
+        var height2 = 550 - margin.top - margin.bottom;
 
-        var svg2 = d3.select("#usbarchart").append("svg")
+        var svg2 = d3.select("#usbarchart_svg").append("svg")
+            // width2 = +svg.attr("width"),
+            // height2 = +svg.attr("height");
             .attr("width", width2 + margin.left + margin.right)
             .attr("height", height2 + margin.top + margin.bottom)
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        svg.append("text")
-            .attr("x", width2 / 2)
+        svg2.append("text")
+            .attr("x", (width2 / 2))
             .attr("y", 0.4)
             .attr("text-anchor", "middle")
             .style("font-size", "16px")
-            .text("Percent Voted by Race, 2004 General Election");
+            .text("Percent Voted by Race, 2000 General Election");
 
-        svg.append("text")
+        svg2.append("text")
             .attr("transform", "translate(" + (width2 / 2) + " ," + (height2 + 30) + ")")
             .style("text-anchor", "middle")
             .text("Race");
 
-        svg.append("text")
+        svg2.append("text")
             .attr("transform", "rotate(-90)")
             .attr("x", -(height2 / 2))
             .attr("y", -30)
@@ -140,30 +132,35 @@
 
         d3.csv("electiondemographicdata.csv").then(function(data) {
 
+            x.domain(data.map(function(d) { if (d.State == "US") { return d.Race; } }));
+            y.domain([0, 100]);
+
             var tooltip = d3.select("body")
                 .append("div")
                 .style("position", "absolute")
                 .style("z-index", "10")
                 .style("visibility", "hidden")
 
-            x.domain(data.map(function(d) { if (d.State == "US") { return d.Race; } }));
-            y.domain([0, 100]);
-
             svg.selectAll(".bar")
                 .data(data)
                 .enter().append("rect")
                 .attr("class", "bar")
-                .attr("x", function (d) { return x(d.Race); })
+                .attr("x", function (d) { 
+                    return x(d.Race); })
+                .attr("y", function (d) { 
+                    return y(d.PercentVoted2000); })
                 .attr("width", x.bandwidth)
-                .attr("y", function (d) { return y(d.PercentVoted2004); })
-                .attr("height", function (d) { return height2 - y(d.PercentVoted2004); })
+                .attr("height", function (d) { 
+                    return height2 - y(d.PercentVoted2000); })
+                // .attr("transform", "translate(500,0)")
+                // .attr("transform", "translate(" + margin.right + "," + margin.top + ")")
                 .on("mouseover", function(e,d) { 
                     return tooltip.style("visibility", "visible")
-                                  .text(d.Race + ": " + d.PercentVoted2004 + "%");})
+                                  .text(d.Race + ": " + d.PercentVoted2000 + "%");})
 	            .on("mousemove", function(e,d) { 
                     return tooltip.style("top", (event.pageY-10)+"px")
                                   .style("left",(event.pageX+10)+"px")
-                                  .text(d.Race + ": " + d.PercentVoted2004 + "%");})
+                                  .text(d.Race + ": " + d.PercentVoted2000 + "%");})
 	            .on("mouseleave", function() { 
                     return tooltip.style("visibility", "hidden");});
 
@@ -175,12 +172,14 @@
                 .call(d3.axisLeft(y));
         });
 
-        var format = function(d) {
-            d = d / 1000000;
-            return d3.format(',.02f')(d) + 'M';
-        }
+        // var format = function(d) {
+        //     d = d / 1000000;
+        //     return d3.format(',.02f')(d) + 'M';
+        // }
 
     </script>
+    </div>
+    </div>
 
 </body>
 </html>
