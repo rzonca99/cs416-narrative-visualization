@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voting Demographic Data 2000-2020</title>
+    <title>Voting Demographic Data 2004-2020</title>
     <link rel="stylesheet" href="styles.css">
     <script src='https://d3js.org/d3.v5.min.js'></script>
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
@@ -28,11 +28,12 @@
             <h1>Voter Demographics, 2004 General Election</h1>
             <h2>George W. Bush (R) vs John Kerry (D)</h2>
             <p>Welcome! This visualization shows demographic data for US presidential elections in the 21st century.<br>
-            The map on the left shows the percent of people in each state who voted in this election. A darker color means more people voted.<br>
-            The bar graph on the right shows the percent of people of each race who voted in this election.<br>
-            By default, the bar graph shows data for the whole US.
-            Select a state from the drop-down menu to see that state's election demographic data.<br>
-            Or click the buttons to see the data for other presidential elections!</p>
+                The map on the left shows the percent of people in each state who voted in this election (minus Alaska and Hawaii).<br>
+                A darker color means more people voted.<br>
+                The bar graph on the right shows the percent of people of each race who voted in this election.<br>
+                By default, the bar graph shows data for the whole US.
+                Select a state from the drop-down menu to see that state's election demographic data.<br>
+                Or click the buttons to see the data for other presidential elections!</p>
             <button id="button2000_prev" class="submit-button">2000 Election</button>
             <button id="button2008_next" class="submit-button">2008 Election</button>
             <script type="text/javascript">
@@ -46,7 +47,7 @@
             </div>
 
         <div id="choropleth">
-    <svg id="choropleth_svg" width="765" height="525" preserveAspectRatio="xMinYMid meet"></svg>
+    <svg id="choropleth_svg" width="765" height="450" preserveAspectRatio="xMinYMid meet"></svg>
     <script>
 
         // The svg
@@ -100,9 +101,10 @@
         </script>
     </div>
     <div id="usbarchart">
-        <svg id="usbarchart_svg" width=600 height=550 preserveAspectRatio="xMaxYMid meet"></svg>
+        <svg id="usbarchart_svg" width=600 height=575 preserveAspectRatio="xMaxYMax meet"></svg>
         <select id="dropdown">
             <option value="Select a State">Select</option>
+            <option value="United States">US</option>
             <option value="Alabama">Alabama</option>
             <option value="Alaska">Alaska</option>
             <option value="Arizona">Arizona</option>
@@ -170,7 +172,7 @@
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     
             var g = svg2.append("g")
-                .attr("transform", "translate(" + 100 + "," + 100 + ")");
+                .attr("transform", "translate(" + 50 + "," + 50 + ")");
     
             // Add labels
             svg2.append("text")
@@ -201,25 +203,18 @@
             d3.csv("electiondemographicdata.csv").then(function(data) {
     
                 // Create dropdown menu
-                function mydropDown(data) {
-                    var states = [];
-                    for (var i in data) {
-                        states.push(data[i].key);
-                    };
-    
-                var dropDown = d3.select("#dropdown")
-                    .append("select")
-                    .attr("class", "selection")
-                    .attr("name", "dropdown");
+                var dropDown = d3.select("#dropdown").append("select")
+                        .attr("name", "dropdown");
     
                 var options = dropDown.selectAll("option")
-                    .data(data)
-                    .enter()
-                    .append("option");
-                    
-                options.text(function(d) { return d.key; })
-                    .attr("value", function(d) { return d.values;});
-                }
+                   .data(data)
+                   .enter()
+                   .append("option");
+    
+                options.text(function (d) { return d.State; })
+                    .attr("value", function (d) { return d.State; });
+    
+                dropDown.on("change", menuChanged);
     
                 // Set domains
                 x.domain(data.map(function(d) { if (d.State == "US") { return d.Race; } }));
@@ -231,6 +226,11 @@
                     .style("position", "absolute")
                     .style("z-index", "10")
                     .style("visibility", "hidden")
+                    .style("background-color", "white")
+                    .style("border", "solid")
+                    // .style("border-width", "1px")
+                    // .style("border-radius", "5px")
+                    .style("padding", "10px")
     
                 // Create axes
                 svg2.append("g")
@@ -246,19 +246,34 @@
                     .enter().append("rect")
                     .attr("class", "bar")
                     .attr("x", function (d) { 
-                        return x(d.Race); })
+                        if (d.State == "US") {
+                            return x(d.Race); 
+                        }
+                    })
                     .attr("y", function (d) { 
-                        return y(d.PercentVoted2004); })
+                        if (d.State == "US") {
+                            return y(d.PercentVoted2004);
+                        }
+                    })
                     .attr("width", x.bandwidth)
                     .attr("height", function (d) { 
-                        return height2 - y(d.PercentVoted2004); })
+                        if (d.State == "US") {
+                            return height2 - y(d.PercentVoted2004);
+                        }
+                    })
                     .on("mouseover", function(e,d) { 
-                        return tooltip.style("visibility", "visible")
-                                      .text(d.Race + ": " + d.PercentVoted2004 + "%");})
+                        if (d.State == "US") {
+                            return tooltip.style("visibility", "visible")
+                                          .text(d.Race + ": " + d.PercentVoted2004 + "%");
+                        }
+                    })
                     .on("mousemove", function(e,d) { 
-                        return tooltip.style("top", (event.pageY-10)+"px")
-                                      .style("left",(event.pageX+10)+"px")
-                                      .text(d.Race + ": " + d.PercentVoted2004 + "%");})
+                        if (d.State == "US") {
+                            return tooltip.style("top", (event.pageY-10)+"px")
+                                          .style("left",(event.pageX+10)+"px")
+                                          .text(d.Race + ": " + d.PercentVoted2004 + "%");
+                        }
+                    })
                     .on("mouseleave", function() { 
                         return tooltip.style("visibility", "hidden");});
     
@@ -269,7 +284,64 @@
                 return d3.format(',.02f')(d) + 'M';
             }
     
+            // Event handler for dropdown menu
+            function menuChanged() {
+                console.log(d);
+    
+                var selectedValue = d3.event.target.value;  
+    
+                jsonOutside.features.forEach(function (d) { 
+    
+                    //if (selectedValue === d.properties.State) {
+    
+                        alert(selectedValue);  //remove this line when things are working!
+    
+                        svg2.selectAll(".bar").remove();
+    
+                        svg2.selectAll(".bar")
+                        .data(data)
+                        .enter().append("rect")
+                        .attr("class", "bar")
+                        .attr("x", function (d) { 
+                            if (d.State == selectedValue) {
+                                return x(d.Race); 
+                            }
+                        })
+                        .attr("y", function (d) { 
+                            if (d.State == selectedValue) {
+                                return y(d.PercentVoted2004);
+                            }
+                        })
+                        .attr("width", x.bandwidth)
+                        .attr("height", function (d) { 
+                            if (d.State == selectedValue) {
+                                return height2 - y(d.PercentVoted2004);
+                            }
+                        })
+                        .on("mouseover", function(e,d) { 
+                            if (d.State == selectedValue) {
+                                return tooltip.style("visibility", "visible")
+                                            .text(d.Race + ": " + d.PercentVoted2004 + "%");
+                            }
+                        })
+                        .on("mousemove", function(e,d) { 
+                            if (d.State == selectedValue) {
+                                return tooltip.style("top", (event.pageY-10)+"px")
+                                            .style("left",(event.pageX+10)+"px")
+                                            .text(d.Race + ": " + d.PercentVoted2004 + "%");
+                            }
+                        })
+                        .on("mouseleave", function() { 
+                            return tooltip.style("visibility", "hidden");});
+    
+    
+                        
+                    //};
+                })
+            }
+    
         </script>
+        </div>
         </div>
 
 </body>
