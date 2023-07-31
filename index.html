@@ -267,6 +267,7 @@
 
         // Event handler for dropdown menu
         function menuChanged() {
+            console.log(d);
 
             var selectedValue = d3.event.target.value;  
 
@@ -275,9 +276,45 @@
                 console.log(d);
                 if (selectedValue === d.properties.State) {
 
-                    alert(selectedValue)  //remove this line when things are working!
+                    alert(selectedValue);  //remove this line when things are working!
 
                     svg2.selectAll(".bar").remove();
+
+                    svg2.selectAll(".bar")
+                    .data(data)
+                    .enter().append("rect")
+                    .attr("class", "bar")
+                    .attr("x", function (d) { 
+                        if (d.State == selectedValue) {
+                            return x(d.Race); 
+                        }
+                    })
+                    .attr("y", function (d) { 
+                        if (d.State == selectedValue) {
+                            return y(d.PercentVoted2000);
+                        }
+                    })
+                    .attr("width", x.bandwidth)
+                    .attr("height", function (d) { 
+                        if (d.State == selectedValue) {
+                            return height2 - y(d.PercentVoted2000);
+                        }
+                    })
+                    .on("mouseover", function(e,d) { 
+                        if (d.State == selectedValue) {
+                            return tooltip.style("visibility", "visible")
+                                        .text(d.Race + ": " + d.PercentVoted2000 + "%");
+                        }
+                    })
+                    .on("mousemove", function(e,d) { 
+                        if (d.State == selectedValue) {
+                            return tooltip.style("top", (event.pageY-10)+"px")
+                                        .style("left",(event.pageX+10)+"px")
+                                        .text(d.Race + ": " + d.PercentVoted2000 + "%");
+                        }
+                    })
+                    .on("mouseleave", function() { 
+                        return tooltip.style("visibility", "hidden");});
 
 
                     
