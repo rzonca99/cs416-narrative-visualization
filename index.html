@@ -65,6 +65,8 @@
         ]).then(function(loadData){
             let topo = loadData[0]
         
+            console.log("fixed?");
+            
           // Draw the map
           svg.append("g")
             .selectAll("path")
@@ -76,7 +78,6 @@
               )
               // set the color of each country
               .attr("fill", function (d) {
-                console.log("it's not my wallet");
                 d.total = data.get(d.properties.NAME); //|| 0;
                 console.log(d.total);
                 return colorScale(d.total);
